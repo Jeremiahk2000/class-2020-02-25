@@ -1,0 +1,44 @@
+---
+title: "class-2020-02-25"
+author: "Jeremiah Kim"
+date: "2/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+library(tidyverse)
+```
+
+```{r, Class Setup}
+
+roll_dice <- function(n) {
+  sample(1:6, size = n, replace = T) 
+}
+
+roll_dice_add <- function(){
+  roll_dice(1) + roll_dice(1)
+}
+
+x <- tibble(x = map_int(1:100000, ~ roll_dice_add()))
+
+ggplot(x, aes(x= x)) +
+  geom_bar(binwidth = 1, col = "grey", fill = "black") +
+  scale_x_continuous(breaks = c(1:12)) +
+  theme_classic()
+```
+
+```{r, Textbook Answer}
+add_dice <- function(n = 1) {
+  stopifnot(is.numeric(n))
+  sum(sample(1:6, n, replace = TRUE))
+}
+
+roll_dice <- function(n) {
+  stopifnot(is.numeric(n))
+  map_int(rep(2, n), add_dice(n))
+}
+```
+
+
+
